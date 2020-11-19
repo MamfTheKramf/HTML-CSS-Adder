@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addition</title>
+    <link rel="stylesheet" href="addition_style.css">
+</head>
+<body>
+    <div class="info">
+        <h2>Fill up the numbers from the least significant bit to the most significant bit.</h2>
+        <em>That means first row first, then the second and so on...</em>
+        <br>
+        <em>Check the box to set the bit to 1.</em>
+        <br>
+        <label>
+            BitLength of the larger number (don't go too high; setting everything up takes exponetial time): 
+            <input type="number" min="1" step="1" value="4" id="inputLength">
+        </label>
+        <button onclick="generate()">START</button>
+    </div>
+
+    <div class="module base">
+    </div>
+
+    <script>
+
+        function createModuleBase() {
+            var module = document.createElement("div");
+            module.classList.add("module");
+            module.classList.add("child");
+            //add the bit checkboxes
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            module.appendChild(checkbox);
+            checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            module.appendChild(checkbox);
+            //add result span
+            var res = document.createElement("span");
+            res.classList.add("result");
+            module.appendChild(res);
+            return module;
+        }
+
+        function generateHelper(depth) {
+            if (depth == 1) {
+                return createModuleBase();
+            } else {
+                var module = createModuleBase();
+
+                var nonCarried = generateHelper(depth - 1);
+                nonCarried.classList.add("non-carried");
+                console.log("Depth = " + depth);
+                var carried = generateHelper(depth - 1);
+                carried.classList.add("carried");
+
+                module.appendChild(nonCarried);
+                module.appendChild(carried);
+
+                return module;
+            }
+        }
+        function generate() {
+            const depth = document.querySelector("#inputLength").value;
+            var base = document.querySelector(".base");
+            base.innerHTML = "";
+            //add the bit checkboxes
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            base.appendChild(checkbox);
+            checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            base.appendChild(checkbox);
+            //add result span
+            var res = document.createElement("span");
+            res.classList.add("result");
+            base.appendChild(res);
+
+            var nonCarried = generateHelper(depth);
+            nonCarried.classList.add("non-carried");
+            var carried = generateHelper(depth);
+            carried.classList.add("carried");
+            base.appendChild(nonCarried);
+            base.appendChild(carried);
+        }
+    </script>
+</body>
+</html>

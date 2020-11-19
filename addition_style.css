@@ -1,0 +1,83 @@
+/*some sexy styling*/
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 16px;
+}
+
+.info {
+    padding: 20px;
+}
+
+h2 {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.base {
+    margin: 1rem 20px;
+    padding: 10px;
+    border: 1px solid grey;
+}
+
+.result::before {
+    border-left: 1px solid black;
+    padding: 2px 5px;
+    margin-left: 12px;
+}
+
+input[type="checkbox"] {
+    margin: 0 4px;
+}
+
+
+/*====================================================actual logic===============================*/
+/*setting result to 0 by default, so we only have to check when to set it to 1*/
+.result::before {
+    content: "0";
+}
+
+/*setting the non-carried child module as the default one*/
+.carried {
+    display: none;
+}
+
+/*in case we need to carry a bit, display the carried*/
+/*when we're in any module and both bits are checked*/
+.module > input:nth-child(1):checked ~ input:nth-child(2):checked ~ .carried,
+/*when we're in a carried module and at least one bit is checked*/
+.carried > input:nth-child(1):checked ~ .carried,
+.carried > input:nth-child(2):checked ~ .carried {
+    display: block;
+}
+
+/*when we're in any module and both bits are checked*/
+.module > input:nth-child(1):checked ~ input:nth-child(2):checked ~ .non-carried,
+/*when we're in a carried module and at least one bit is checked*/
+.carried > input:nth-child(1):checked ~ .non-carried,
+.carried > input:nth-child(2):checked ~ .non-carried {
+    display: none;
+}
+
+/*calculating base module first*/
+.base > input:nth-child(1):checked ~ input:nth-child(2):not(:checked) ~ .result::before,
+.base > input:nth-child(1):not(:checked) ~ input:nth-child(2):checked ~ .result::before 
+{
+    content: "1";
+}
+
+/*calculating for child modules*/
+/*.non-carried: result will only be 1 if only one bit is set*/
+.non-carried > input:nth-child(1):not(:checked) ~ input:nth-child(2):checked ~ .result::before, /*only second bit checked*/
+.non-carried > input:nth-child(1):checked ~ input:nth-child(2):not(:checked) ~ .result::before /*only first bit checked*/
+{
+    content: "1";
+}
+
+/*carried: result will be one if none of the bits is set or both*/
+.carried > input:nth-child(1):not(:checked) ~ input:nth-child(2):not(:checked) ~ .result::before, /*none checked*/
+.carried > input:nth-child(1):checked ~ input:nth-child(2):checked ~ .result::before /*both checked*/ {
+    content: "1";
+}
