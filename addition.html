@@ -26,16 +26,18 @@
     <script>
         // script for setting up the HTML-structure
         
-        function createModuleBase() {
+        function createModuleBase(last_module = false) {
             var module = document.createElement("div");
             module.classList.add("module");
             module.classList.add("child");
             //add the bit checkboxes
             var checkbox = document.createElement("input");
             checkbox.type = "checkbox";
+            checkbox.disabled = last_module;
             module.appendChild(checkbox);
             checkbox = document.createElement("input");
             checkbox.type = "checkbox";
+            checkbox.disabled = last_module;
             module.appendChild(checkbox);
             //add result span
             var res = document.createElement("span");
@@ -46,7 +48,7 @@
 
         function generateHelper(depth) {
             if (depth == 1) {
-                return createModuleBase();
+                return createModuleBase(true);
             } else {
                 var module = createModuleBase();
 
