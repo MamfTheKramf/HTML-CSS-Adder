@@ -32,6 +32,10 @@ input[type="checkbox"] {
     margin: 0 4px;
 }
 
+input:disabled {
+    opacity: 0;
+}
+
 
 /*====================================================actual logic===============================*/
 /*setting result to 0 by default, so we only have to check when to set it to 1*/
